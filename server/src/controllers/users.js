@@ -72,4 +72,41 @@ module.exports = {
       console.log(error);
     }
   },
+
+  updateUser: (req, res) => {
+    const userId = req.params.id;
+    const { username, fullName } = req.body;
+    const userImg = req.file.path;
+
+    // validasi input user
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: errors.errors[0].msg });
+    }
+
+    // validasi input image
+    if (!req.file) {
+      return res.status(422).json({ msg: 'image must be uploaded!' });
+    }
+
+    // capitalize fullname
+    const names = fullName.split(' ');
+    names.forEach((name, i) => {
+      // console.log(names[i].charAt(0));
+      names[i] = names[i].charAt(0).toUpperCase() + names[i].slice(1);
+    });
+    const name = names.join(' ');
+
+    // update user
+    pool.query(queries.getUserById, [userId], (error, result) => {
+      const noUser = !result.rows.length;
+      if (noUser) return res.status(201).json({ msg: 'user does not exist in the database!' });
+
+      pool.query(queries.updateUser, [username, name, userImg, userId], (error, result) => {
+        res.status(201).json({
+          msg: 'user updated successfully!',
+        });
+      });
+    });
+  },
 };

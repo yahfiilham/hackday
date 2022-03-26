@@ -10,4 +10,6 @@ router.post('/', [userValidation.username, userValidation.fullName, userValidati
 
 router.get('/:id', controllers.getUserById);
 
+router.put('/:id', [userValidation.username, userValidation.fullName], controllers.updateUser);
+
 module.exports = router;
