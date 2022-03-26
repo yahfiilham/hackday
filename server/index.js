@@ -1,11 +1,10 @@
+require('dotenv').config({ path: './.env' });
 const express = require('express');
-const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const router = require('./src/routes/index');
 
-dotenv.config();
 const app = express();
 
 app.use(express.json());
