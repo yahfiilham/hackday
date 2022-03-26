@@ -7,4 +7,6 @@ router.get('/', controllers.getUsers);
 
 router.post('/', [userValidation.username, userValidation.fullName, userValidation.email, userValidation.password], controllers.createUser);
 
+router.get('/:id', controllers.getUserById);
+
 module.exports = router;

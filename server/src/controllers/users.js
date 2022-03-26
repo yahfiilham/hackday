@@ -55,4 +55,21 @@ module.exports = {
       console.log(error);
     }
   },
+
+  getUserById: (req, res) => {
+    const id = parseInt(req.params.id);
+    try {
+      pool.query(queries.getUserById, [id], (error, result) => {
+        const noUsers = !result.rows.length;
+        if (noUsers) return res.status(201).json({ msg: 'user does not exist in the database!' });
+
+        res.status(200).json({
+          message: 'Successful',
+          data: result.rows,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

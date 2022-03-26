@@ -1,6 +1,8 @@
 module.exports = {
   getUsers:
     'SELECT users.id, username, fullname, email, password, user_picture, refresh_token, post_id, user_id, picture_post, picture_title, created_at, updated_at FROM users INNER JOIN posts ON posts.user_id = users.id ORDER BY posts.post_id DESC',
-  createUser: 'INSERT INTO users (username, fullname, email, password) VALUES ($1, $2, $3, $4)',
+  getUserById:
+    'SELECT users.id, username, fullname, email, password, user_picture, refresh_token, post_id, user_id, picture_post, picture_title, created_at, updated_at FROM users LEFT JOIN posts ON posts.user_id = users.id WHERE users.id = $1 ORDER BY posts.post_id DESC',
   checkEmailExists: 'SELECT * FROM users WHERE email = $1',
+  createUser: 'INSERT INTO users (username, fullname, email, password) VALUES ($1, $2, $3, $4)',
 };
