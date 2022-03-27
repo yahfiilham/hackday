@@ -1,20 +1,41 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 import Navbars from '../../components/navbar/Navbar';
 import bgWave from '../../images/bg-wave.png';
 import noPictures from '../../images/no-pictures.png';
 import userPicture from '../../images/user.png';
 import './Home.css';
 
-const Home = ({ tokenExp, userId }) => {
+const Home = () => {
   const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
+  const [expire, setExpire] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
+    refreshToken();
     getUsers();
-  }, [users]);
+  }, [token]);
+
+  const refreshToken = async () => {
+    try {
+      const res = await axios.get('http://localhost:5050/api/v1/token');
+      setToken(res.data.accessToken);
+
+      const decode = jwt_decode(res.data.accessToken);
+      setUserId(decode.userId);
+      setExpire(decode.exp);
+    } catch (error) {
+      navigate('/login');
+    }
+  };
 
   const axiosJWT = axios.create();
 
@@ -22,7 +43,7 @@ const Home = ({ tokenExp, userId }) => {
   axiosJWT.interceptors.request.use(
     async config => {
       const currentDate = new Date();
-      if (tokenExp * 1000 < currentDate.getTime()) {
+      if (expire * 1000 < currentDate.getTime()) {
         const res = await axios.get('http://localhost:5050/api/v1/token');
         config.headers.Authorization = `Bearer ${res.data.accessToken}`;
         setToken(res.data.accessToken);

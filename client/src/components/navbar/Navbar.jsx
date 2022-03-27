@@ -2,9 +2,13 @@ import React from 'react';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import addPhoto from '../../images/add-photo.png';
+import ModalPost from '../modals/modalPost/ModalPost';
 import './Navbar.css';
 
 const Navbars = props => {
+  // console.log(props);
+  const [modalShow, setModalShow] = React.useState(false);
+
   return (
     <Navbar bg='ligth' className=' shadow-sm bg-body navbar'>
       <Container>
@@ -40,9 +44,11 @@ const Navbars = props => {
             </Link>
           </Nav.Item>
           <Nav.Item className='mx-0'>
-            <Button variant='primary' className='btn-add-photo'>
+            <Button variant='primary' onClick={() => setModalShow(true)} className='btn-add-photo'>
               <img src={addPhoto} className='add-photo' alt='' />
             </Button>
+
+            <ModalPost show={modalShow} onHide={() => setModalShow(false)} userid={props.userId} />
           </Nav.Item>
           <Nav.Item className=''>
             <Link to='#'>

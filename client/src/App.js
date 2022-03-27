@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -7,11 +8,12 @@ import './App.css';
 import Home from './pages/home/Home';
 import Login from './pages/auth/login/Login';
 import Signup from './pages/auth/signup/Signup';
+import Profile from './pages/profile/Profile';
+import UpdateProfile from './pages/updateProfile/UpdateProfile';
 
 const App = () => {
-  const [userId, setUserId] = useState([]);
+  const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
-  const [expire, setExpire] = useState('');
 
   const navigate = useNavigate();
 
@@ -26,7 +28,6 @@ const App = () => {
 
       const decode = jwt_decode(res.data.accessToken);
       setUserId(decode.userId);
-      setExpire(decode.exp);
     } catch (error) {
       navigate('/login');
     }
@@ -35,9 +36,11 @@ const App = () => {
   return (
     <div className='app'>
       <Routes>
-        <Route path='/' element={<Home tokenExp={expire} userId={userId} />} />
+        <Route path='/' element={<Home />} />
         <Route path='/login' element={userId ? <Navigate to='/' /> : <Login />} />
         <Route path='/signup' element={userId ? <Navigate to='/' /> : <Signup />} />
+        <Route path='/profile/:userId' element={<Profile />} />
+        <Route path='/profile/update/:userId' element={<UpdateProfile />} />
       </Routes>
     </div>
   );
