@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const multer = require('multer');
+const path = require('path');
 
 const router = require('./src/routes/index');
 
@@ -28,6 +29,7 @@ const fileFilter = (req, file, cb) => {
 const app = express();
 
 app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
