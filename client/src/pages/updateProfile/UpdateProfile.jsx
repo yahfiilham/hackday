@@ -11,6 +11,7 @@ const UpdateProfile = () => {
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [userPicture, setUserPicture] = useState('');
+  const [saveImage, setSaveImage] = useState('https://fakeimg.pl/300/');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,6 +30,11 @@ const UpdateProfile = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleUploadImage = e => {
+    setUserPicture(e.target.files[0]);
+    setSaveImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const updateProfile = async e => {
@@ -76,8 +82,12 @@ const UpdateProfile = () => {
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Control type='file' name='userPicture' className='shadow-none' required onChange={e => setUserPicture(e.target.files[0])} />
+            <Form.Control type='file' name='userPicture' className='shadow-none' required onChange={handleUploadImage} />
           </Form.Group>
+
+          <picture>
+            <img src={saveImage} className='img-fluid img-preview' alt='' />
+          </picture>
 
           <p className='text-danger mb-3'>{msg}</p>
 

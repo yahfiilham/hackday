@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const ModalPost = props => {
   const [name, setName] = useState('');
   const [userPicture, setUserPicture] = useState('');
+  const [saveImage, setSaveImage] = useState('https://fakeimg.pl/300/');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +16,7 @@ const ModalPost = props => {
   const showFileName = e => {
     setName(e.target.files[0].name);
     setUserPicture(e.target.files[0]);
+    setSaveImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const post = async () => {
@@ -39,7 +41,11 @@ const ModalPost = props => {
     <Modal {...props} size='md' aria-labelledby='contained-modal-title-vcenter' centered>
       <div className='row py-4'>
         <div className='col-lg-8 mx-auto'>
-          <div className='input-group mb-3 px-2 rounded-pill bg-light shadow-sm'>
+          <picture>
+            <img src={saveImage} className='img-fluid img-preview' alt='' />
+          </picture>
+
+          <div className='input-group my-3 px-2 rounded-pill bg-light shadow-sm'>
             <input id='upload' type='file' onChange={showFileName} className='form-control border-0 bg-light shadow-none' required />
           </div>
 
@@ -65,6 +71,8 @@ const ModalPost = props => {
           onClick={() => {
             props.onHide();
             setMsg('');
+            setLoading(false);
+            setSaveImage('https://fakeimg.pl/300/');
           }}>
           Close
         </Button>
