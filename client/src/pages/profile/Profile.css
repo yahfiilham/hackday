@@ -1,0 +1,98 @@
+.profile {
+  border: 1px solid #dbdbdb;
+  position: relative;
+  padding-top: 6rem;
+  overflow: hidden;
+}
+
+.bg-wave {
+  position: absolute;
+  background-image: url('../../images/bg-wave.png');
+  top: -350px;
+  right: -170px;
+  z-index: -10;
+}
+
+.dropdown-bg button {
+  background-color: transparent !important;
+  border: none;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.img {
+  width: 50% !important;
+  height: 150px !important;
+}
+
+.img .btn-img img {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #dbdbdb;
+  cursor: pointer;
+}
+
+.img img:hover {
+  opacity: 0.9;
+}
+
+.userPicture {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.profile-photos-icon img {
+  cursor: pointer;
+}
+
+.profile-photos-icon img:hover {
+  opacity: 0.8;
+}
+
+.btn-img {
+  background-color: transparent !important;
+  opacity: 1 !important;
+  height: 100% !important;
+  width: 100%;
+  padding: 0 !important;
+}
+
+.img-show {
+  height: 300px !important;
+}
+
+@media (min-width: 414px) {
+  .profile {
+    margin-top: 6rem;
+    margin-bottom: 2rem;
+  }
+
+  .img {
+    height: 230px !important;
+  }
+
+  .btn-img img {
+    height: 230px !important;
+    margin-top: 1rem;
+  }
+
+  .photos-list {
+    margin-bottom: 4rem;
+  }
+
+  .bg-wave {
+    top: -180px;
+    right: 280px;
+  }
+
+  .container-new {
+    margin-bottom: 0 !important;
+  }
+}

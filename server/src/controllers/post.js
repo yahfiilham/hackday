@@ -6,7 +6,6 @@ const queryUsers = require('../queries/users');
 module.exports = {
   postImage: (req, res) => {
     const userId = req.params.id;
-    const postImg = req.file.path;
 
     // validasi input user
     const errors = validationResult(req);
@@ -26,6 +25,8 @@ module.exports = {
         msg: 'type PNG does not support!',
       });
     }
+
+    const postImg = req.file.path;
 
     // upload img
     pool.query(queryUsers.getUserById, [userId], (error, result) => {

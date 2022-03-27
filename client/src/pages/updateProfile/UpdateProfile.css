@@ -1,0 +1,9 @@
+.updateProfile {
+  min-height: 100vh;
+  border: 1px solid #dbdbdb;
+}
+
+.img-preview {
+  width: 300px;
+  height: 300px;
+}

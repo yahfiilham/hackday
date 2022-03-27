@@ -1,0 +1,11 @@
+.app {
+  max-width: 414px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+@media (min-width: 414px) {
+  .app {
+    max-width: 650px;
+  }
+}

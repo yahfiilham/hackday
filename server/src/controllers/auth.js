@@ -9,35 +9,34 @@ module.exports = {
   login: (req, res) => {
     const { email, password } = req.body;
 
-    try {
-      pool.query(queryUsers.checkEmailExists, [email], async (error, result) => {
-        const match = await bcrypt.compare(password, result.rows[0].password);
+    pool.query(queryUsers.checkEmailExists, [email], async (error, result) => {
+      const noEmail = !result.rows.length;
+      if (noEmail) return res.status(400).json({ msg: 'Email does not exist!' });
 
-        if (!match) return res.status(400).json({ msg: 'wrong password!' });
+      const match = await bcrypt.compare(password, result.rows[0].password);
 
-        const { id: userId, fullname: fullName, email } = result.rows[0];
+      if (!match) return res.status(400).json({ msg: 'wrong password!' });
 
-        const accessToken = jwt.sign({ userId, fullName, email }, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: '20s',
-        });
+      const { id: userId, fullname: fullName, email } = result.rows[0];
 
-        const refreshToken = jwt.sign({ userId, fullName, email }, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: '1d',
-        });
-
-        pool.query(queries.updateToken, [refreshToken, userId], (error, result) => {});
-
-        res.cookie('refreshToken', refreshToken, {
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
-        });
-
-        // Kirim json untuk diakses oleh client
-        res.json({ accessToken });
+      const accessToken = jwt.sign({ userId, fullName, email }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '20s',
       });
-    } catch (error) {
-      res.status(400).json({ msg: 'Email does not exist!' });
-    }
+
+      const refreshToken = jwt.sign({ userId, fullName, email }, process.env.REFRESH_TOKEN_SECRET, {
+        expiresIn: '1d',
+      });
+
+      pool.query(queries.updateToken, [refreshToken, userId], (error, result) => {});
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      // Kirim json untuk diakses oleh client
+      res.json({ accessToken });
+    });
   },
 
   refreshToken: (req, res) => {
